@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chung Sức Liên Quân - KHAIVIPPRO</title>
+    
+    <!-- Favicon hiển thị trên tab trình duyệt -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #070913;
+            color: #f1f5f9;
+            padding-bottom: 40px;
+            min-height: 100vh;
+        }
+
+        /* HEADER / NAVBAR */
+        header {
+            background-color: rgba(13, 17, 28, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #ff0055;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(255, 0, 85, 0.25);
+        }
+
+        .header-brand {
+            font-size: 18px;
+            font-weight: 900;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: #00f0ff;
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+        }
+
+        .user-status {
+            font-size: 13px;
+            color: #00f0ff;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+        }
+
+        .btn-auth {
+            background: linear-gradient(45deg, #ff0055, #ff5e00);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(255, 0, 85, 0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.8);
+        }
+
+        .btn-logout {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* BANNER THÔNG BÁO */
+        .marquee-box {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(5px);
+            padding: 10px 15px;
+            margin: 15px 5%;
+            border-radius: 8px;
+            border-left: 4px solid #00f0ff;
+            font-size: 13px;
+            color: #00f0ff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+
+        /* KHUNG CHÍNH USER */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
+
+        .panel {
+            background: rgba(17, 24, 39, 0.85);
+            border: 1px solid #1f2937;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #f8fafc;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-left: 3px solid #ff0055;
+            padding-left: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* THẺ GÓI DỊCH VỤ */
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 25px;
+        }
+
+        .package-card {
+            background: linear-gradient(135deg, rgba(18, 24, 41, 0.9) 0%, rgba(13, 18, 31, 0.9) 100%);
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card:hover {
+            border-color: #00f0ff;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .package-card.selected {
+            border-color: #ff0055;
+            background: linear-gradient(135deg, rgba(31, 16, 39, 0.9) 0%, rgba(18, 24, 41, 0.9) 100%);
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(255, 0, 85, 0.6); }
+            100% { box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
+        }
+
+        .pkg-name { font-size: 15px; font-weight: bold; color: #ffffff; margin-bottom: 4px; }
+        .pkg-speed { font-size: 11px; color: #94a3b8; margin-bottom: 8px; }
+        .pkg-price-box { display: flex; justify-content: space-between; align-items: center; }
+        .pkg-price { color: #f59e0b; font-weight: 800; font-size: 14px; }
+        .pkg-sub { font-size: 11px; color: #64748b; }
+
+        .pkg-badge {
+            position: absolute;
+            top: 0; right: 12px;
+            background: linear-gradient(45deg, #ff0055, #ff5e00);
+            color: white; font-size: 9px; padding: 3px 8px;
+            border-radius: 0 0 6px 6px; font-weight: 800;
+            box-shadow: 0 2px 8px rgba(255, 0, 85, 0.4);
+        }
+
+        /* FORM INPUTS */
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
+
+        .qty-control {
+            display: flex; align-items: center; width: 140px;
+            background-color: #121829; border-radius: 8px; border: 1px solid #334155;
+        }
+
+        .qty-btn { width: 40px; height: 38px; background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
+        .qty-input { width: 60px; text-align: center; border: none; background: none; color: white; font-weight: bold; font-size: 14px; }
+
+        input[type="text"], input[type="password"] {
+            width: 100%; padding: 12px;
+            background-color: rgba(18, 24, 41, 0.9);
+            border: 1px solid #334155; border-radius: 8px;
+            color: white; font-size: 14px; outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #00f0ff; box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+        }
+
+        /* BẢNG TỔNG TIỀN */
+        .summary-box { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; }
+        .summary-row.total { border-top: 1px solid #334155; padding-top: 12px; font-size: 16px; font-weight: bold; color: #ffffff; }
+        .total-price { color: #ff0055; font-size: 20px; font-weight: 800; text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); }
+
+        .btn-buy {
+            width: 100%; padding: 14px;
+            background: linear-gradient(45deg, #ff0055, #ff5e00);
+            color: white; border: none; border-radius: 8px;
+            font-size: 15px; font-weight: 800; text-transform: uppercase;
+            cursor: pointer; box-shadow: 0 4px 20px rgba(255, 0, 85, 0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-buy:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 25px rgba(255, 0, 85, 0.7); filter: brightness(1.1);
+        }
+
+        .security-badge {
+            margin-top: 15px; background-color: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px;
+            padding: 10px; font-size: 12px; color: #00f0ff; text-align: center;
+        }
+
+        /* AUTH FORM */
+        .auth-container { max-width: 400px; margin: 40px auto; }
+        .auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid #334155; }
+        .auth-tab-btn {
+            flex: 1; padding: 10px; background: none; border: none;
+            color: #94a3b8; font-weight: bold; font-size: 15px; cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .auth-tab-btn.active { color: #ff0055; border-bottom-color: #ff0055; }
+
+        /* MODAL POPUP */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85); display: none;
+            justify-content: center; align-items: center; z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background-color: #0d121f; border: 2px solid #ff0055; border-radius: 14px;
+            padding: 25px; width: 90%; max-width: 450px;
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.4);
+        }
+        .modal-title { font-size: 18px; font-weight: bold; color: #ff0055; margin-bottom: 15px; text-align: center; }
+        .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-cancel { flex: 1; padding: 12px; background-color: #1e293b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
+        /* TRANG THANH TOÁN NGÂN HÀNG */
+        .payment-container { max-width: 500px; margin: 0 auto; text-align: center; }
+        .qr-card { background-color: #ffffff; padding: 15px; border-radius: 12px; display: inline-block; margin: 15px 0; }
+        .qr-card img { width: 220px; height: 220px; }
+        
+        .bank-info-box { 
+            background-color: #121829; 
+            padding: 18px; 
+            border-radius: 10px; 
+            text-align: left; 
+            margin-bottom: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            border: 1px solid #1e293b; 
+        }
+        .bank-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+        .copy-text-btn { background-color: #ff0055; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; }
+
+        /* BẢNG ADMIN PRO */
+        .admin-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        .admin-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(18, 24, 41, 0.9), rgba(13, 18, 31, 0.9));
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .stat-title { font-size: 12px; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+        .stat-value { font-size: 22px; font-weight: 900; margin-top: 5px; }
+
+        .admin-filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-search {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px 12px !important;
+            font-size: 13px !important;
+        }
+
+        .filter-btn-group { display: flex; gap: 6px; }
+        .filter-btn {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background-color: #ff0055;
+            color: white;
+            border-color: #ff0055;
+        }
+
+        .btn-clean-done {
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-clean-done:hover { background-color: #0369a1; }
+
+        .admin-table { width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px; }
+        .admin-table th { color: #8e8e93; font-size: 13px; padding-bottom: 15px; border-bottom: 1px solid #2c2c2e; text-transform: uppercase; }
+        .admin-table td { padding: 16px 0; border-bottom: 1px solid #2c2c2e; vertical-align: middle; }
+        .code-cell { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; color: #ffffff; }
+        .copy-btn { background: none; border: none; cursor: pointer; color: #8e8e93; }
+        .status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+        .status-success { background-color: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .status-running { background-color: rgba(234, 179, 8, 0.15); color: #fde047; }
+        .progress-box { display: flex; flex-direction: column; gap: 6px; min-width: 140px; }
+        .progress-bar-bg { width: 100%; height: 6px; background-color: #2c2c2e; border-radius: 3px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background-color: #00f0ff; transition: width 0.3s; }
+        .admin-action-btns { display: flex; gap: 6px; margin-top: 6px; }
+        .action-btn { padding: 4px 8px; border: none; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; }
+        .btn-plus { background-color: #10b981; color: #fff; }
+        .btn-full { background-color: #8b5cf6; color: #fff; }
+        .btn-del { background-color: #ef4444; color: #fff; }
+
+        /* TOAST NOTIFICATION */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast-msg {
+            background: rgba(13, 17, 28, 0.95);
+            color: #00f0ff;
+            border: 1px solid #00f0ff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+            animation: slideIn 0.3s ease, fadeOut 0.5s 2.5s forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(10px); }
+        }
+
+        /* FOOTER */
+        footer {
+            max-width: 1200px; margin: 30px auto 0; padding: 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+            background-color: rgba(13, 17, 28, 0.9); border-radius: 12px;
+            font-size: 13px; color: #94a3b8; border: 1px solid #1f2937;
+        }
+        footer h4 { margin-bottom: 10px; font-size: 14px; color: #fff; }
+        footer ul { list-style: none; }
+        footer li { margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+
+    <!-- Khung chứa thông báo Toast -->
+    <div id="toast-container"></div>
+
+    <!-- NAVBAR -->
+    <header>
+        <div class="header-brand" onclick="openPage('user')">KHAIVIPPRO</div>
+        <div class="nav-links">
+            <span class="nav-item active" id="navHome" onclick="openPage('user')">🏠 TRANG CHỦ</span>
+            <span class="nav-item" id="navAdmin" onclick="openPage('admin')">⚙️ BẢNG QUẢN LÝ</span>
+            
+            <div id="userInfoBox" style="display: flex; gap: 10px; align-items: center;">
+                <button class="btn-auth" onclick="openPage('auth')">🔑 ĐĂNG NHẬP / ĐĂNG KÝ</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="marquee-box" id="globalMarquee">
+        🔥 HỆ THỐNG CÂY CHUNG SỨC TỰ ĐỘNG - KHAIVIPPRO - TỐC ĐỘ SIÊU TỐC - AN TOÀN 100%!
+    </div>
+
+    <!-- 1. TRANG KHÁCH HÀNG (USER) -->
+    <div id="userPage" class="page-section active">
+        <div class="main-container">
+            <div class="panel">
+                <div class="section-title">1. CHỌN GÓI DỊCH VỤ</div>
+                <div class="package-grid" id="packageContainer"></div>
+
+                <div class="section-title">2. SỐ LƯỢNG (GÓI)</div>
+                <div class="form-group">
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateQty(-1)">-</button>
+                        <input type="number" class="qty-input" id="pkgQty" value="1" readonly>
+                        <button class="qty-btn" onclick="updateQty(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="section-title">3. MÃ MỜI (FRIEND CODE)</div>
+                <div class="form-group">
+                    <input type="text" id="friendCode" placeholder="Dán Mã Mời (Friend Code) vào đây...">
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="section-title">THÔNG TIN THANH TOÁN</div>
+                <div class="summary-box">
+                    <div class="summary-row"><span>Dịch Vụ:</span><strong style="color:#fff">Chung Sức Liên Quân</strong></div>
+                    <div class="summary-row"><span>Gói Đã Chọn:</span><strong id="sumPkgName" style="color:#ff0055">38 VÉ NHẢY</strong></div>
+                    <div class="summary-row"><span>Số Lượng:</span><strong id="sumQty" style="color:#fff">1 Gói</strong></div>
+                    <div class="summary-row"><span>Tổng Vé Nhảy:</span><strong id="sumTickets" style="color:#00f0ff">38 Vé</strong></div>
+                    <div class="summary-row total"><span>Tổng Tiền:</span><span class="total-price" id="sumTotal">5.000đ</span></div>
+                </div>
+
+                <button class="btn-buy" onclick="openConfirmStep()">🛒 MUA NGAY</button>
+
+                <div class="security-badge">
+                    🛡️ <strong>CAM KẾT BẢO MẬT & TỐC ĐỘ</strong><br>
+                    Đơn hàng sẽ tự động đẩy sang Bảng Quản Lý để KHAIVIPPRO xử lý.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL XÁC NHẬN BƯỚC 2 -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-box">
+            <div class="modal-title">⚠️ XÁC NHẬN ĐƠN HÀNG (BƯỚC 2/2)</div>
+            <div class="summary-box" style="margin-bottom:0;">
+                <div class="summary-row"><span>Tài khoản mua:</span><strong id="confirmUser" style="color:#00f0ff">-</strong></div>
+                <div class="summary-row"><span>Gói dịch vụ:</span><strong id="confirmPkg" style="color:#fff">-</strong></div>
+                <div class="summary-row"><span>Mã Mời:</span><strong id="confirmCode" style="color:#f59e0b">-</strong></div>
+                <div class="summary-row"><span>Số lượng:</span><strong id="confirmQty" style="color:#fff">-</strong></div>
+                <div class="summary-row total"><span>Tổng thanh toán:</span><strong id="confirmPrice" style="color:#ff0055; font-size:18px;">-</strong></div>
+            </div>
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeConfirmModal()">HỦY BỎ</button>
+                <button class="btn-buy" style="flex:1; padding:12px;" onclick="goToPaymentPage()">XÁC NHẬN & THANH TOÁN 💳</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRANG THANH TOÁN NGÂN HÀNG -->
+    <div id="paymentPage" class="page-section">
+        <div class="payment-container panel">
+            <div class="section-title" style="text-align:center;">CỔNG THANH TOÁN NGÂN HÀNG</div>
+            <p style="font-size:13px; color:#94a3b8;">Vui lòng chuyển khoản đúng số tiền và nội dung bên dưới để đơn hàng tự động kích hoạt!</p>
+
+            <div class="qr-card">
+                <img id="bankQrImage" src="" alt="Mã QR Thanh Toán">
+            </div>
+
+            <div class="bank-info-box">
+                <div class="bank-row">
+                    <span>Ngân hàng:</span>
+                    <strong style="color:#00f0ff;">MB BANK (MBB)</strong>
+                </div>
+                <div class="bank-row">
+                    <span>Số tài khoản:</span>
+                    <div>
+                        <strong style="color:#f59e0b;" id="bankAccNum">08165252262008</strong>
+                        <button class="copy-text-btn" onclick="copyCode('08165252262008')">Copy</button>
+                    </div>
+                </div>
+                <div class="bank-row">
+                    <span>Chủ tài khoản:</span>
+                    <strong style="color:#fff;">KHAIVIPPRO</strong>
+                </div>
+                <div class="bank-row">
+                    <span>Số tiền cần chuyển:</span>
+                    <strong style="color:#ff0055; font-size:16px;" id="payAmount">0đ</strong>
+                </div>
+                <div class="bank-row">
+                    <span>Nội dung chuyển khoản:</span>
+                    <div>
+                        <strong style="color:#4ade80;" id="payMemo">CSLQ12345</strong>
+                        <button class="copy-text-btn" onclick="copyCode(document.getElementById('payMemo').innerText)">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-buy" onclick="finishPayment()">✅ TÔI ĐÃ CHUYỂN KHOẢN</button>
+        </div>
+    </div>
+
+    <!-- 2. TRANG ĐĂNG KÝ / ĐĂNG NHẬP KHÁCH -->
+    <div id="authPage" class="page-section">
+        <div class="auth-container panel">
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="tabLogin" onclick="switchAuthMode('login')">Đăng Nhập</button>
+                <button class="auth-tab-btn" id="tabRegister" onclick="switchAuthMode('register')">Đăng Ký Tài Khoản</button>
+            </div>
+
+            <div id="formLogin">
+                <div class="form-group">
+                    <label>Tên tài khoản:</label>
+                    <input type="text" id="loginUser" placeholder="Nhập tên đăng nhập...">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu:</label>
+                    <input type="password" id="loginPass" placeholder="Nhập mật khẩu...">
+                </div>
+                <button class="btn-buy" onclick="handleLogin()">ĐĂNG NHẬP</button>
+            </div>
+
+            <div id="formRegister" style="display: none;">
+                <div class="form-group">
+                    <label>Tên tài khoản mới:</label>
+                    <input type="text" id="regUser" placeholder="Tạo tên tài khoản...">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu:</label>
+                    <input type="password" id="regPass" placeholder="Tạo mật khẩu...">
+                </div>
+                <button class="btn-buy" onclick="handleRegister()">TẠO TÀI KHOẢN NGAY</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. TRANG QUẢN TRỊ ADMIN PRO -->
+    <div id="adminPage" class="page-section">
+        <div class="admin-container">
+
+            <!-- THẺ THỐNG KÊ DASHBOARD -->
+            <div class="admin-dashboard">
+                <div class="stat-card">
+                    <div class="stat-title">TỔNG DOANH THU</div>
+                    <div class="stat-value" id="statRevenue" style="color: #4ade80;">0đ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">TỔNG SỐ ĐƠN HÀNG</div>
+                    <div class="stat-value" id="statTotalOrders" style="color: #00f0ff;">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">ĐƠN ĐANG CHẠY</div>
+                    <div class="stat-value" id="statRunningOrders" style="color: #fde047;">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">ĐƠN ĐÃ HOÀN THÀNH</div>
+                    <div class="stat-value" id="statDoneOrders" style="color: #ff0055;">0</div>
+                </div>
+            </div>
+
+            <!-- CHỈNH SỬA THÔNG BÁO BANNER -->
+            <div class="panel">
+                <div class="section-title">⚙️ CẬP NHẬT THÔNG BÁO BANNER WEB</div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="bannerInput" placeholder="Nhập chữ thông báo mới...">
+                    <button class="action-btn btn-plus" style="padding: 0 15px; font-size: 13px;" onclick="updateBannerNotice()">LƯU THÔNG BÁO</button>
+                </div>
+            </div>
+
+            <!-- BẢNG ĐƠN HÀNG -->
+            <div class="panel">
+                <div class="section-title" id="orderTitle">Danh sách đơn hàng (0)</div>
+                
+                <!-- BỘ LỌC VÀ TÌM KIẾM -->
+                <div class="admin-filter-bar">
+                    <input type="text" id="adminSearchInput" class="filter-search" placeholder="🔍 Tìm theo Mã mời hoặc Người đặt..." oninput="renderAdminTable()">
+                    <div class="filter-btn-group">
+                        <button class="filter-btn active" id="filterAll" onclick="setAdminFilter('all')">Tất cả</button>
+                        <button class="filter-btn" id="filterRunning" onclick="setAdminFilter('running')">Đang chạy</button>
+                        <button class="filter-btn" id="filterDone" onclick="setAdminFilter('done')">Hoàn thành</button>
+                    </div>
+                    <button class="btn-clean-done" onclick="clearAllDoneOrders()">🧹 Xóa đơn xong</button>
+                </div>
+
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">MÃ ĐƠN HÀNG</th>
+                            <th style="width: 20%;">NGƯỜI ĐẶT</th>
+                            <th style="width: 20%;">TRẠNG THÁI</th>
+                            <th style="width: 30%;">TIẾN ĐỘ & THAO TÁC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- BẢNG TÀI KHOẢN KHÁCH HÀNG -->
+            <div class="panel">
+                <div class="section-title" id="userTitle">Danh sách tài khoản Khách Hàng (0)</div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>TÊN TÀI KHOẢN</th>
+                            <th>MẬT KHẨU</th>
+                            <th>NGÀY TẠO</th>
+                            <th>THAO TÁC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUserTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div>
+            <h4>KHAIVIPPRO.COM</h4>
+            <p>Tham gia sự kiện chung sức liên quân mới nhất. Cung cấp dịch vụ buff sự kiện, code bước nhảy tự động bởi KHAIVIPPRO.</p>
+        </div>
+        <div>
+            <h4>PHƯƠNG THỨC THANH TOÁN</h4>
+            <ul>
+                <li>💳 Thẻ Cào Điện Thoại</li>
+                <li>🏦 Ngân Hàng MB BANK</li>
+                <li>📱 Ví MoMo / ZaloPay</li>
+            </ul>
+        </div>
+        <div>
+            <h4>LIÊN HỆ HỖ TRỢ</h4>
+            <ul>
+                <li>📞 Hotline: 0816.525.226</li>
+                <li>✉️ Email: support@khaivippro.com</li>
+                <li>📍 Hỗ trợ 24/7 (KHAIVIPPRO)</li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Nhúng Firebase SDK và Logic Tích Hợp Database Chuẩn Chỉnh -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwL-Wvjb53oZlAv8ep393OV7bLIgi8_Z4",
+            authDomain: "khaivippro.firebaseapp.com",
+            databaseURL: "https://khaivippro-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "khaivippro",
+            storageBucket: "khaivippro.firebasestorage.app",
+            messagingSenderId: "51155639696",
+            appId: "1:51155639696:web:103ab4922d4736d5be6715",
+            measurementId: "G-D1CTKFWQM7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const ADMIN_PASSWORD = "khaivippro";
+        let isAdminLoggedIn = false;
+        let currentFilterStatus = 'all';
+
+        let userAccounts = [];
+        let orderList = [];
+        let currentUser = null;
+
+        const packages = [
+            { id: 1, name: "38 VÉ NHẢY", price: 5000, tickets: 38, speed: "Tốc độ siêu tốc", badge: "ƯU TIÊN" },
+            { id: 2, name: "150 VÉ NHẢY - RƯƠNG SKIN SS", price: 10000, tickets: 150, speed: "Tốc độ siêu tốc", badge: null },
+            { id: 3, name: "340 VÉ NHẢY - FULL 3 RƯƠNG", price: 15000, tickets: 340, speed: "Tốc độ siêu tốc", badge: "HOT" },
+            { id: 4, name: "1000 VÉ NHẢY SẮN SSS", price: 40000, tickets: 1026, speed: "Tốc độ siêu tốc", badge: null },
+            { id: 5, name: "2K VÉ SĂN SSS", price: 65000, tickets: 2052, speed: "Tốc độ siêu tốc", badge: null },
+            { id: 6, name: "5K VÉ SĂN SSS", price: 130000, tickets: 5130, speed: "Tốc độ siêu tốc", badge: null }
+        ];
+
+        let selectedPkg = packages[0];
+        let currentQty = 1;
+        let pendingOrder = null;
+
+        // Hàm thông báo Toast hiện đại
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+
+        window.copyCode = function(code) {
+            navigator.clipboard.writeText(code);
+            showToast(`📋 Đã chép mã: ${code}`);
+        }
+
+        // ==================== LẮNG NGHE DỮ LIỆU REALTIME TỪ FIREBASE ====================
+        
+        // 1. Đồng bộ thông báo Banner
+        const noticeRef = ref(db, 'config/notice');
+        onValue(noticeRef, (snapshot) => {
+            const val = snapshot.val();
+            if (val) {
+                document.getElementById('globalMarquee').innerText = val;
+                document.getElementById('bannerInput').value = val;
+            }
+        });
+
+        // 2. Đồng bộ danh sách đơn hàng & Cập nhật Dashboard Thống Kê
+        const ordersRef = ref(db, 'orders');
+        onValue(ordersRef, (snapshot) => {
+            const data = snapshot.val();
+            orderList = [];
+            let totalRevenue = 0;
+            let runningCount = 0;
+            let doneCount = 0;
+
+            if (data) {
+                Object.keys(data).forEach((key) => {
+                    const item = { firebaseKey: key, ...data[key] };
+                    orderList.push(item);
+
+                    if (item.price) totalRevenue += item.price;
+                    if (item.current >= item.target) doneCount++;
+                    else runningCount++;
+                });
+            }
+
+            // Cập nhật thẻ Dashboard
+            document.getElementById('statRevenue').innerText = `${totalRevenue.toLocaleString('vi-VN')}đ`;
+            document.getElementById('statTotalOrders').innerText = orderList.length;
+            document.getElementById('statRunningOrders').innerText = runningCount;
+            document.getElementById('statDoneOrders').innerText = doneCount;
+
+            if (document.getElementById('adminPage').classList.contains('active')) {
+                renderAdminTable();
+            }
+        });
+
+        // 3. Đồng bộ danh sách tài khoản khách hàng trên Cloud
+        const usersRef = ref(db, 'users');
+        onValue(usersRef, (snapshot) => {
+            const data = snapshot.val();
+            userAccounts = [];
+            if (data) {
+                Object.keys(data).forEach((key) => {
+                    userAccounts.push({
+                        firebaseKey: key,
+                        ...data[key]
+                    });
+                });
+            }
+            if (document.getElementById('adminPage').classList.contains('active')) {
+                renderUserManagementTable();
+            }
+        });
+
+        // ==================== CÁC HÀM XỬ LÝ GIAO DIỆN & LOGIC ====================
+
+        window.checkLoginRequired = function() {
+            if (!currentUser) {
+                showToast("⚠️ Vui lòng đăng nhập để tiếp tục!");
+                openPage('auth');
+                return false;
+            }
+            return true;
+        }
+
+        window.openPage = function(pageName) {
+            if (pageName === 'admin' && !isAdminLoggedIn) {
+                let pass = prompt("Nhập mật khẩu Chủ Web (Admin):");
+                if (pass === ADMIN_PASSWORD) {
+                    isAdminLoggedIn = true;
+                    showToast("🔓 Đăng nhập Admin thành công!");
+                } else if (pass !== null) {
+                    showToast("❌ Mật khẩu không chính xác!");
+                    return;
+                } else {
+                    return;
+                }
+            }
+
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            if (pageName === 'user') {
+                document.getElementById('userPage').classList.add('active');
+                document.getElementById('navHome').classList.add('active');
+            } else if (pageName === 'auth') {
+                document.getElementById('authPage').classList.add('active');
+            } else if (pageName === 'payment') {
+                document.getElementById('paymentPage').classList.add('active');
+            } else if (pageName === 'admin') {
+                document.getElementById('adminPage').classList.add('active');
+                document.getElementById('navAdmin').classList.add('active');
+                renderAdminTable();
+                renderUserManagementTable();
+            }
+        }
+
+        window.openConfirmStep = function() {
+            if (!checkLoginRequired()) return;
+
+            const code = document.getElementById('friendCode').value.trim();
+            if (!code) {
+                showToast("⚠️ Vui lòng nhập Mã Mời (Friend Code)!");
+                return;
+            }
+
+            const totalPrice = selectedPkg.price * currentQty;
+            const totalTickets = selectedPkg.tickets * currentQty;
+
+            pendingOrder = {
+                id: Math.floor(100000 + Math.random() * 900000),
+                code: code,
+                pkgName: selectedPkg.name,
+                qty: currentQty,
+                tickets: totalTickets,
+                price: totalPrice
+            };
+
+            document.getElementById('confirmUser').innerText = currentUser;
+            document.getElementById('confirmPkg').innerText = selectedPkg.name;
+            document.getElementById('confirmCode').innerText = code;
+            document.getElementById('confirmQty').innerText = `${currentQty} gói (${totalTickets} vé)`;
+            document.getElementById('confirmPrice').innerText = `${totalPrice.toLocaleString('vi-VN')}đ`;
+
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        window.closeConfirmModal = function() {
+            document.getElementById('confirmModal').classList.remove('active');
+        }
+
+        window.goToPaymentPage = function() {
+            closeConfirmModal();
+            const orderMemo = `CSLQ${pendingOrder.id}`;
+
+            document.getElementById('payAmount').innerText = `${pendingOrder.price.toLocaleString('vi-VN')}đ`;
+            document.getElementById('payMemo').innerText = orderMemo;
+
+            const qrUrl = `https://img.vietqr.io/image/MB-08165252262008-compact2.png?amount=${pendingOrder.price}&addInfo=${orderMemo}&accountName=KHAIVIPPRO`;
+            document.getElementById('bankQrImage').src = qrUrl;
+
+            openPage('payment');
+        }
+
+        window.finishPayment = function() {
+            if (pendingOrder) {
+                const newOrderRef = push(ref(db, 'orders'));
+                set(newOrderRef, {
+                    id: pendingOrder.id,
+                    code: pendingOrder.code,
+                    user: currentUser,
+                    price: pendingOrder.price,
+                    current: 0,
+                    target: pendingOrder.tickets
+                }).catch((error) => {
+                    console.error("Lỗi đẩy đơn hàng: ", error);
+                });
+
+                document.getElementById('friendCode').value = '';
+                showToast("🚀 Đơn hàng đã được đẩy lên hệ thống thành công!");
+                pendingOrder = null;
+                openPage('user');
+            }
+        }
+
+        window.switchAuthMode = function(mode) {
+            const tabL = document.getElementById('tabLogin');
+            const tabR = document.getElementById('tabRegister');
+            const formL = document.getElementById('formLogin');
+            const formR = document.getElementById('formRegister');
+
+            if (mode === 'login') {
+                tabL.classList.add('active'); tabR.classList.remove('active');
+                formL.style.display = 'block'; formR.style.display = 'none';
+            } else {
+                tabR.classList.add('active'); tabL.classList.remove('active');
+                formR.style.display = 'block'; formL.style.display = 'none';
+            }
+        }
+
+        window.handleRegister = function() {
+            const u = document.getElementById('regUser').value.trim();
+            const p = document.getElementById('regPass').value.trim();
+
+            if (!u || !p) { showToast("⚠️ Vui lòng nhập đầy đủ thông tin!"); return; }
+            if (userAccounts.some(x => x.username === u)) { showToast("⚠️ Tài khoản đã tồn tại!"); return; }
+
+            const newUserRef = push(ref(db, 'users'));
+            set(newUserRef, {
+                username: u,
+                pass: p,
+                date: new Date().toLocaleDateString('vi-VN')
+            }).then(() => {
+                showToast("✅ Đăng ký thành công! Hãy đăng nhập.");
+                switchAuthMode('login');
+            }).catch(err => {
+                showToast("❌ Lỗi đăng ký: " + err.message);
+            });
+        }
+
+        window.handleLogin = function() {
+            const u = document.getElementById('loginUser').value.trim();
+            const p = document.getElementById('loginPass').value.trim();
+
+            const acc = userAccounts.find(x => x.username === u && x.pass === p);
+            if (acc) {
+                currentUser = acc.username;
+                updateUserNavUI();
+                showToast(`✨ Xin chào ${currentUser}!`);
+                openPage('user');
+            } else {
+                showToast("❌ Sai tên tài khoản hoặc mật khẩu!");
+            }
+        }
+
+        window.handleLogout = function() {
+            currentUser = null;
+            updateUserNavUI();
+            showToast("👋 Đã đăng xuất.");
+        }
+
+        function updateUserNavUI() {
+            const box = document.getElementById('userInfoBox');
+            if (currentUser) {
+                box.innerHTML = `
+                    <span class="user-status">👤 ${currentUser}</span>
+                    <button class="btn-logout" onclick="handleLogout()">Đăng xuất</button>
+                `;
+            } else {
+                box.innerHTML = `<button class="btn-auth" onclick="openPage('auth')">🔑 ĐĂNG NHẬP / ĐĂNG KÝ</button>`;
+            }
+        }
+
+        function renderPackages() {
+            const container = document.getElementById('packageContainer');
+            container.innerHTML = '';
+
+            packages.forEach(pkg => {
+                const card = document.createElement('div');
+                card.className = `package-card ${selectedPkg.id === pkg.id ? 'selected' : ''}`;
+                card.onclick = () => {
+                    if (!checkLoginRequired()) return;
+                    selectedPkg = pkg; 
+                    renderPackages(); 
+                };
+
+                card.innerHTML = `
+                    ${pkg.badge ? `<div class="pkg-badge">${pkg.badge}</div>` : ''}
+                    <div class="pkg-name">${pkg.name}</div>
+                    <div class="pkg-speed">${pkg.speed}</div>
+                    <div class="pkg-price-box">
+                        <span class="pkg-price">${pkg.price.toLocaleString('vi-VN')}đ</span>
+                        <span class="pkg-sub">${pkg.tickets} Bước Nhảy</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            updateSummary();
+        }
+
+        window.updateQty = function(delta) {
+            if (!checkLoginRequired()) return;
+            if (currentQty + delta >= 1) {
+                currentQty += delta;
+                document.getElementById('pkgQty').value = currentQty;
+                updateSummary();
+            }
+        }
+
+        function updateSummary() {
+            const total = selectedPkg.price * currentQty;
+            const totalTickets = selectedPkg.tickets * currentQty;
+
+            document.getElementById('sumPkgName').innerText = selectedPkg.name;
+            document.getElementById('sumQty').innerText = `${currentQty} Gói`;
+            document.getElementById('sumTickets').innerText = `${totalTickets} Vé`;
+            document.getElementById('sumTotal').innerText = `${total.toLocaleString('vi-VN')}đ`;
+        }
+
+        // ==================== TÍNH NĂNG ADMIN PRO ====================
+
+        window.setAdminFilter = function(status) {
+            currentFilterStatus = status;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if (status === 'all') document.getElementById('filterAll').classList.add('active');
+            else if (status === 'running') document.getElementById('filterRunning').classList.add('active');
+            else if (status === 'done') document.getElementById('filterDone').classList.add('active');
+            renderAdminTable();
+        }
+
+        window.updateBannerNotice = function() {
+            const txt = document.getElementById('bannerInput').value.trim();
+            if (txt) {
+                set(ref(db, 'config/notice'), txt);
+                showToast("📢 Đã cập nhật thông báo banner!");
+            }
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            const searchKeyword = document.getElementById('adminSearchInput').value.toLowerCase().trim();
+
+            let filteredList = orderList.filter(item => {
+                const isDone = item.current >= item.target;
+                if (currentFilterStatus === 'running' && isDone) return false;
+                if (currentFilterStatus === 'done' && !isDone) return false;
+
+                if (searchKeyword) {
+                    const matchCode = item.code.toLowerCase().includes(searchKeyword);
+                    const matchUser = (item.user || '').toLowerCase().includes(searchKeyword);
+                    return matchCode || matchUser;
+                }
+                return true;
+            });
+
+            document.getElementById('orderTitle').innerText = `Danh sách đơn hàng (${filteredList.length}/${orderList.length})`;
+            tbody.innerHTML = '';
+
+            if (filteredList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#8e8e93; padding:15px;">Không có đơn hàng phù hợp</td></tr>`;
+                return;
+            }
+
+            filteredList.forEach(item => {
+                const percent = Math.round((item.current / item.target) * 100) || 0;
+                const isDone = item.current >= item.target;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div class="code-cell">
+                            <span>${item.code}</span>
+                            <button class="copy-btn" onclick="copyCode('${item.code}')">📋</button>
+                        </div>
+                    </td>
+                    <td style="color:#00f0ff; font-weight:bold;">${item.user}</td>
+                    <td>
+                        <span class="status-badge ${isDone ? 'status-success' : 'status-running'}">
+                            ${isDone ? 'Thành công' : 'Đang chạy'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="progress-box">
+                            <span style="font-size:13px; font-weight:bold; color:#fff">${percent}% (${(item.price || 0).toLocaleString('vi-VN')}đ)</span>
+                            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${percent}%;"></div></div>
+                            <span style="font-size:11px; color:#8e8e93">vé nhảy: ${item.current} / ${item.target}</span>
+                            <div class="admin-action-btns">
+                                <button class="action-btn btn-plus" onclick="addProgress('${item.firebaseKey}', ${item.current}, ${item.target})" ${isDone ? 'disabled style="opacity:0.3"' : ''}>+10 vé</button>
+                                <button class="action-btn btn-full" onclick="completeOrderImmediately('${item.firebaseKey}', ${item.target})" ${isDone ? 'disabled style="opacity:0.3"' : ''}>Xong 100%</button>
+                                <button class="action-btn btn-del" onclick="deleteOrder('${item.firebaseKey}')">Xóa</button>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.completeOrderImmediately = function(firebaseKey, target) {
+            const itemRef = ref(db, `orders/${firebaseKey}`);
+            update(itemRef, { current: target });
+            showToast("⚡ Đã hoàn thành đơn hàng 100%!");
+        }
+
+        window.clearAllDoneOrders = function() {
+            const doneOrders = orderList.filter(item => item.current >= item.target);
+            if (doneOrders.length === 0) {
+                showToast("⚠️ Không có đơn nào hoàn thành để xóa!");
+                return;
+            }
+            if (confirm(`Bạn có chắc muốn xóa tất cả ${doneOrders.length} đơn hàng đã hoàn thành?`)) {
+                doneOrders.forEach(item => {
+                    remove(ref(db, `orders/${item.firebaseKey}`));
+                });
+                showToast("🧹 Đã dọn dẹp các đơn hoàn thành!");
+            }
+        }
+
+        function renderUserManagementTable() {
+            const tbody = document.getElementById('adminUserTableBody');
+            document.getElementById('userTitle').innerText = `Danh sách tài khoản Khách Hàng (${userAccounts.length})`;
+            tbody.innerHTML = '';
+
+            if (userAccounts.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#8e8e93; padding:15px;">Chưa có tài khoản nào</td></tr>`;
+                return;
+            }
+
+            userAccounts.forEach(acc => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color:#ffffff; font-weight:bold;">${acc.username}</td>
+                    <td style="color:#f59e0b;">${acc.pass}</td>
+                    <td style="color:#8e8e93;">${acc.date}</td>
+                    <td>
+                        <button class="action-btn btn-del" onclick="deleteUserAccount('${acc.firebaseKey}')">Xóa TK</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.deleteUserAccount = function(firebaseKey) {
+            if (confirm("Bạn có chắc muốn xóa tài khoản này?")) {
+                const userRef = ref(db, `users/${firebaseKey}`);
+                remove(userRef);
+                showToast("🗑️ Đã xóa tài khoản.");
+            }
+        }
+
+        window.addProgress = function(firebaseKey, current, target) {
+            const newCurrent = Math.min(target, current + 10);
+            const itemRef = ref(db, `orders/${firebaseKey}`);
+            update(itemRef, { current: newCurrent });
+        }
+
+        window.deleteOrder = function(firebaseKey) {
+            if (confirm("Bạn có chắc chắn muốn xóa đơn hàng này?")) {
+                const itemRef = ref(db, `orders/${firebaseKey}`);
+                remove(itemRef);
+                showToast("🗑️ Đã xóa đơn hàng.");
+            }
+        }
+
+        renderPackages();
+    </script>
+</body>
+</html>
